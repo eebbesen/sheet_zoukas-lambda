@@ -7,7 +7,7 @@ module SheetZoukas
   module Lambda
     class Error < StandardError; end
 
-    def self.lambda_handler(event:, context:)
+    def self.lambda_handler(event:, _context:)
       sheet_id = event[:sheet_id]
       tab_name = event[:tab_name]
       range = event[:range]
@@ -15,7 +15,7 @@ module SheetZoukas
       call_sheet(sheet_id, tab_name, range)
     end
 
-    def self.call_sheet(sheet_id, tab_name, range = nil)
+    private_class_method def self.call_sheet(sheet_id, tab_name, range = nil)
       SheetZoukas.retrieve_sheet_json(sheet_id, tab_name, range)
     end
   end

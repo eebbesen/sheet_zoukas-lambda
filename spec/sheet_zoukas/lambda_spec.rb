@@ -26,7 +26,7 @@ RSpec.describe SheetZoukas::Lambda do
   describe '.call_sheet' do
     it 'calls SheetZoukas::Lambda.call_sheet with all parameters' do
       VCR.use_cassette('call_sheet_all') do
-        data = described_class.call_sheet(event[:sheet_id], event[:tab_name], event[:range])
+        data = described_class.send(:call_sheet, event[:sheet_id], event[:tab_name], event[:range])
 
         expect(JSON.parse(data)[0]).to eq(
           { 'Place' => 'Slice Brothers', 'Deal' => '2 slices for $5.99', 'Deal Earned' => '', 'Deal Used' => '03/30',
@@ -38,7 +38,7 @@ RSpec.describe SheetZoukas::Lambda do
 
     it 'calls SheetZoukas::Lambda.call_sheet with all sheet_id and tab_name' do
       VCR.use_cassette('call_sheet_some') do
-        data = described_class.call_sheet(event[:sheet_id], event[:tab_name])
+        data = described_class.send(:call_sheet, event[:sheet_id], event[:tab_name])
 
         expect(JSON.parse(data)[0]).to eq(
           { 'Place' => 'Slice Brothers', 'Deal' => '2 slices for $5.99', 'Deal Earned' => '', 'Deal Used' => '03/30',
