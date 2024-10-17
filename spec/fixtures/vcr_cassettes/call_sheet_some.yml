@@ -1,0 +1,1243 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://www.googleapis.com/oauth2/v4/token
+    body:
+      encoding: ASCII-8BIT
+      string: grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=<ASSERTION>
+    headers:
+      User-Agent:
+      - Faraday v2.12.0
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Vary:
+      - Origin
+      - Referer
+      - X-Origin
+      Date:
+      - Thu, 17 Oct 2024 23:17:24 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Cache-Control:
+      - private
+      X-Xss-Protection:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Content-Type-Options:
+      - nosniff
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: '{"access_token":"<TOKEN>","expires_in":3599,"token_type":"Bearer"}'
+  recorded_at: Thu, 17 Oct 2024 23:17:24 GMT
+- request:
+    method: get
+    uri: https://sheets.googleapis.com/v4/spreadsheets/sheet_id_slug/values/tab_name_slug
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - unknown/0.0.0 google-apis-sheets_v4/0.37.0 Mac OS X/14.6.1 (gzip)
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip,deflate
+      Date:
+      - Thu, 17 Oct 2024 23:17:24 GMT
+      X-Goog-Api-Client:
+      - gl-ruby/3.3.5 gdcl/1.37.0
+      Authorization:
+      - Bearer <TOKEN>
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Vary:
+      - Origin
+      - Referer
+      - X-Origin
+      Content-Encoding:
+      - gzip
+      Date:
+      - Thu, 17 Oct 2024 23:17:24 GMT
+      Server:
+      - ESF
+      Cache-Control:
+      - private
+      X-Xss-Protection:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Content-Type-Options:
+      - nosniff
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      X-L2-Request-Path:
+      - l2-managed-6
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "range": "Log!A1:AB1000",
+          "majorDimension": "ROWS",
+          "values": [
+            [
+              "Place",
+              "Deal",
+              "Deal Earned",
+              "Deal Used",
+              "Deal Starts",
+              "Deal Ends",
+              "Notes",
+              "Money Saved",
+              "Reward Type"
+            ],
+            [
+              "Slice Brothers",
+              "2 slices for $5.99",
+              "",
+              "03/30",
+              "",
+              "",
+              "no longer active",
+              "4.99",
+              "no longer active",
+              "",
+              "TOTAL SAVED",
+              "124.15"
+            ],
+            [
+              "Slice Brothers",
+              "2 slices for $5.99",
+              "",
+              "04/11",
+              "",
+              "",
+              "no longer active",
+              "4.99",
+              "no longer active"
+            ],
+            [
+              "Pot Belly",
+              "1 free sandwich with the purchase of sandwich between 04/01 and 04/07",
+              "04/04",
+              "04/08",
+              "04/01",
+              "04/07",
+              "",
+              "10.66",
+              "rewards"
+            ],
+            [
+              "Jimmy John's",
+              "1 free sandwich with purchase of first sandwich online",
+              "04/15",
+              "04/23",
+              "",
+              "",
+              "",
+              "9.76",
+              "signup offer"
+            ],
+            [
+              "Jimmy John's",
+              "$5.99 sandwich offer for rewards members valid for 3 days",
+              "05/01",
+              "05/03",
+              "",
+              "05/03",
+              "",
+              "3.06",
+              "rewards"
+            ],
+            [
+              "Cassie's",
+              "$7.99 sandwich and fries",
+              "",
+              "05/01",
+              "",
+              "",
+              "$8.78 with tax",
+              "1.48",
+              "daily deal"
+            ],
+            [
+              "Skyway New Masala",
+              "10% off Wednesdays",
+              "",
+              "05/08",
+              "",
+              "",
+              "",
+              "1.2",
+              "daily deal"
+            ],
+            [
+              "Afro Deli",
+              "5% back through T-Mobile",
+              "",
+              "05/09",
+              "",
+              "",
+              "",
+              "0.6"
+            ],
+            [
+              "Pot Belly",
+              "5% back through my credit card",
+              "",
+              "",
+              "",
+              "06/10"
+            ],
+            [
+              "Subway ",
+              "5% back through my credit card",
+              "",
+              "05/10",
+              "",
+              "05/13",
+              "",
+              "0.43"
+            ],
+            [
+              "Subway",
+              "BOGO with code FLBOGO",
+              "",
+              "05/10",
+              "",
+              "5/15",
+              "",
+              "8.77",
+              "promotion"
+            ],
+            [
+              "White Castle",
+              "$25 gift cards for $19.21",
+              "",
+              "",
+              "",
+              "05/31",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "My Burger",
+              "20% off with code TWOLVES20",
+              "",
+              "",
+              "",
+              "05/22",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Jimmy John's",
+              "Free dessert",
+              "",
+              "",
+              "",
+              "06/01",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Rival House",
+              "20% off all menu items",
+              "",
+              "",
+              "",
+              "06/30",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Chipotle",
+              "BOGO buritto when order through GrubHub",
+              "",
+              "06/03",
+              "",
+              "",
+              "",
+              "11.7"
+            ],
+            [
+              "Pizza Luce",
+              "Fee appetizer with specialty pizza coupon",
+              "",
+              "06/04",
+              "",
+              "",
+              "",
+              "10.79",
+              "mailer"
+            ],
+            [
+              "Domino's",
+              "50% off all menu-priced pizzas with code 9413",
+              "",
+              "",
+              "06/03",
+              "06/09",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Jimmy John's",
+              "$2 off $10 online or using the app",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Arby's",
+              "5 for $5 online or using the app",
+              "",
+              "",
+              "06/10",
+              "06/15",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Leeann Chin",
+              "BOGO 50% off with Instagram post: Follow us on Instagram, like this post, and show this offer to the cashier to redeem.",
+              "",
+              "",
+              "06/05",
+              "06/11",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Culver's",
+              "Free single scoop of frozen custard with one topping (birthday)",
+              "",
+              "",
+              "06/06",
+              "06/20",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "McDonald's",
+              "BOGO Big Mac",
+              "",
+              "06/08",
+              "",
+              "",
+              "",
+              "4.59",
+              "rewards"
+            ],
+            [
+              "Rival House",
+              "10% off (birthday)",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Jimmy John's",
+              "Free side with order",
+              "",
+              "",
+              "06/10",
+              "06/13",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Smash Burger",
+              "$15 with $60 gift card purchase",
+              "",
+              "",
+              "06/10",
+              "06/16",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Longfellow Grill",
+              "$5 Freehouse beers 18:00 - close for dad",
+              "",
+              "",
+              "06/16",
+              "06/16",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Highland Grill",
+              "$5 Freehouse beers 18:00 - close for dad",
+              "",
+              "",
+              "06/16",
+              "06/16",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Qdoba",
+              "Buy $50 gift card get $10 to use between 07/01/24 and 08/31/24",
+              "",
+              "",
+              "05/01",
+              "06/30",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Afro Deli",
+              "5% back from T-Mobile dining rewards",
+              "",
+              "06/12",
+              "",
+              "",
+              "",
+              "0.71"
+            ],
+            [
+              "Afro Deli",
+              "$10 off $10 or more from T-Mobile dining rewards",
+              "",
+              "06/12",
+              "06/11",
+              "06/17",
+              "",
+              "10"
+            ],
+            [
+              "Leeann Chin",
+              "25% off $20",
+              "",
+              "",
+              "06/12",
+              "06/18",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Smash Burger",
+              "$1 tots every Thursday",
+              "",
+              "",
+              "06/13",
+              "7/11",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Red Rabbit",
+              "1 free beer for dad dining in",
+              "",
+              "",
+              "06/16",
+              "06/16",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Red Lobster",
+              "Buy $50 gift card get two $10 gift cards. First gift card good 07/2/24 - 07/31/24; second 08/01/24 - 08/31/24. Both good only when spending $40 exclusive of alcohol, tax, gratiuity, and other gift cards.",
+              "",
+              "",
+              "",
+              "07/01",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Qdoba",
+              "$3 off for joining rewards",
+              "",
+              "",
+              "",
+              "06/14",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Lund's & Byerly's",
+              "$10 off $100 online order with code NEWSITE",
+              "",
+              "",
+              "05/21",
+              "06/30",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Door Dash ",
+              "25% off $12 or more order",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Subway",
+              "BOGO sandwich with code FLBOGO",
+              "",
+              "06/16",
+              "06/12",
+              "06/22",
+              "",
+              "8.59",
+              "promotion"
+            ],
+            [
+              "Subway ",
+              "5% cash back via credit card",
+              "",
+              "06/16",
+              "",
+              "06/30",
+              "",
+              "0.43"
+            ],
+            [
+              "Jersey Mike's",
+              "10% cash back via credit card",
+              "",
+              "",
+              "",
+              "06/29"
+            ],
+            [
+              "CVS",
+              "20% cash back via credit card",
+              "",
+              "06/16",
+              "",
+              "06/29",
+              "",
+              "2.26"
+            ],
+            [
+              "Buffalo Wild Wings",
+              "$10 coupon valid  6/17/24–7/31/24 with purchase of $40 gift card",
+              "",
+              "",
+              "05/28",
+              "06/16",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Jimmy John's",
+              "$3 off $15",
+              "",
+              "",
+              "06/17",
+              "06/19",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Taco John's",
+              "$5 off for three visits",
+              "",
+              "",
+              "06/01",
+              "06/30",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Buffalo Wild Wings",
+              "6 free wings ",
+              "",
+              "",
+              "",
+              "06/26",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Buffalo Wild Wings",
+              "$5 off $25",
+              "",
+              "",
+              "",
+              "06/19",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Buffalo Wild Wings",
+              "All you can eat wings and fries Mondays and Wednesdays",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Buffalo Wild Wings",
+              "BOGO wings Tuesdays",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Slice Brothers",
+              "$5 off (birthday month)",
+              "",
+              "",
+              "06/01",
+              "06/30",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Buttered Tin",
+              "$5 off (birthday month)",
+              "",
+              "",
+              "06/01",
+              "06/30",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Arby's",
+              "$1 shake with deluxe burger purchase (once per day)",
+              "",
+              "",
+              "",
+              "06/30",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "My Burger",
+              "$5 off $15 lunch order with MACFIVE",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "My Burger",
+              "%15 off online order with MACFIFTEEN",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Iron Ranger",
+              "10% off $50 dine-in",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Green Mill",
+              "$5 off $25",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Green Mill",
+              "BOGO take & bake pizza",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "FireBox BBQ",
+              "$5 off $20",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "FireBox BBQ",
+              "$10 off Firebox Feast",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Habañero Tacos",
+              "Free taco when you mention ad in mailer",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Habañero Tacos",
+              "$5 off $15",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Potsticker",
+              "$5 off $20",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Potsticker",
+              "$10 off $40",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Maverick's Pizza",
+              "$5 off $30 except Fridays",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Billy's",
+              "$5 off $20",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Billy's",
+              "$10 off $40",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Uptowner",
+              "$5 off $25",
+              "",
+              "",
+              "",
+              "08/31",
+              "",
+              "",
+              "mailer"
+            ],
+            [
+              "Subway",
+              "BOGO sandwich with code FLBOGO",
+              "",
+              "06/18",
+              "06/12",
+              "06/22",
+              "",
+              "9.77",
+              "promotion"
+            ],
+            [
+              "Subway ",
+              "5% cash back via credit card",
+              "",
+              "06/18",
+              "",
+              "06/30",
+              "",
+              "0.48"
+            ],
+            [
+              "Leeann Chin",
+              "2 entrees for $18 by following instructions on Instagram",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Portillos's",
+              "Buy 1 sandwich, side, and drink and get a sandwich free",
+              "",
+              "06/22",
+              "",
+              "",
+              "They gave me credit for the sandwich that was $9.79 and charged me for the hot dog that was $4.29",
+              "9.79",
+              "coupon card from the Saints game"
+            ],
+            [
+              "Jimmy John's",
+              "Buy one Firecracker Wrap and score 50% off your next wrap",
+              "",
+              "",
+              "06/20",
+              "06/25",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Jimmy John's",
+              "$5 off $20",
+              "",
+              "",
+              "",
+              "06/28",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Pino's Pizzaria",
+              "$9 for two slices and a drink",
+              "",
+              "06/27",
+              "",
+              "",
+              "",
+              "2",
+              "deal"
+            ],
+            [
+              "Domino's",
+              "Free dessert with $10 order",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Leeann Chin",
+              "$5 off $20",
+              "",
+              "",
+              "06/26",
+              "07/02",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Jimmy John's",
+              "$2 off $10",
+              "",
+              "",
+              "",
+              "07/03",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Taco John's",
+              "$5 for visiting 3 times after 7:00 PM",
+              "",
+              "",
+              "07/01",
+              "07/31",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Buffalo Wild Wings",
+              "$7 off $25",
+              "",
+              "",
+              "",
+              "07/03",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Dairy Queen",
+              "$3 off a 6-pc Chicken Strip Basket with Drink Purchase",
+              "",
+              "",
+              "",
+              "07/05",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Domino's",
+              "Sign up for text alerts and get 20% off next order",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Jimmy John's",
+              "Free side: pickle, cookie, brownie or chips",
+              "",
+              "",
+              "",
+              "07/16",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Subway",
+              "20% off any order with code TWENTYOFF",
+              "",
+              "07/03",
+              "",
+              "08/28",
+              "",
+              "2.42",
+              "promotion"
+            ],
+            [
+              "Leeann Chin",
+              "BOGO 50% off with Instagram post: Follow us on Instagram, like this post, and show this offer to the cashier to redeem.",
+              "",
+              "",
+              "",
+              "07/09",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Jimmy John's",
+              "$5.99 sandwich offer for rewards members valid for 3 days",
+              "",
+              "",
+              "",
+              "07/06",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Jimmy John's",
+              "BOGO free firecracker wrap",
+              "",
+              "",
+              "07/04",
+              "07/04",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Jimmy John's",
+              "$5 off $20",
+              "",
+              "",
+              "",
+              "07/06",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Arby's",
+              "$4 gyro",
+              "",
+              "",
+              "",
+              "07/15",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Buffalo Wild Wings",
+              "6 free wings with $10 purchase with promo GOWINGS",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Taco John's",
+              "Free fried chicken taco with $3 purchase",
+              "",
+              "",
+              "07/06",
+              "07/06",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Domino's",
+              "Tip $3 get $3 off next week's order",
+              "",
+              "",
+              "",
+              "07/15",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "India Palace",
+              "%5 back with T-Mobile dining rewards",
+              "",
+              "07/06",
+              "",
+              "",
+              "",
+              "1.62"
+            ],
+            [
+              "Chipotle",
+              "125 extra points with entree",
+              "",
+              "",
+              "07/08",
+              "07/14",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Jimmy John's",
+              "$4.99 regular sandwich",
+              "",
+              "07/11",
+              "",
+              "07/12",
+              "",
+              "3.06",
+              "rewards"
+            ],
+            [
+              "Leeann Chin",
+              "$5 off $20",
+              "",
+              "",
+              "",
+              "07/16",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Smash Burger",
+              "Free fries with purchase using code FRYDAY24",
+              "",
+              "",
+              "07/12",
+              "07/12",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Buffalo Wild Wings",
+              "$5 off $20",
+              "",
+              "",
+              "",
+              "07/17",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Jimmy John's",
+              "Free brownie",
+              "",
+              "",
+              "",
+              "09/09",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Subway",
+              "5% cash back",
+              "",
+              "",
+              "",
+              "07/31",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Leeann Chin",
+              "Buy two entrees get one free with Instagram post",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "promotion"
+            ],
+            [
+              "Rival House",
+              "20% off for birthday",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Jimmy John's",
+              "$5 off $20",
+              "",
+              "",
+              "",
+              "07/21",
+              "",
+              "",
+              "rewards"
+            ],
+            [
+              "Domino's",
+              "35% off when you pay with Venmo",
+              "",
+              "",
+              "7/15",
+              "08/11",
+              "",
+              "",
+              "promotion"
+            ]
+          ]
+        }
+  recorded_at: Thu, 17 Oct 2024 23:17:24 GMT
+recorded_with: VCR 6.3.1
