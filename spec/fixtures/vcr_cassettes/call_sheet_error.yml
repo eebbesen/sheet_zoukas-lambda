@@ -1,0 +1,112 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://www.googleapis.com/oauth2/v4/token
+    body:
+      encoding: ASCII-8BIT
+      string: grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=<ASSERTION>
+    headers:
+      User-Agent:
+      - Faraday v2.12.0
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Vary:
+      - Origin
+      - Referer
+      - X-Origin
+      Date:
+      - Fri, 18 Oct 2024 00:02:49 GMT
+      Server:
+      - scaffolding on HTTPServer2
+      Cache-Control:
+      - private
+      X-Xss-Protection:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Content-Type-Options:
+      - nosniff
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: '{"access_token":"<ACCESS_TOKEN>","expires_in":3599,"token_type":"Bearer"}'
+  recorded_at: Fri, 18 Oct 2024 00:02:49 GMT
+- request:
+    method: get
+    uri: https://sheets.googleapis.com/v4/spreadsheets/sheet_id_slug/values/tab_name_slug
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - unknown/0.0.0 google-apis-sheets_v4/0.37.0 Mac OS X/14.6.1 (gzip)
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip,deflate
+      Date:
+      - Fri, 18 Oct 2024 00:02:49 GMT
+      X-Goog-Api-Client:
+      - gl-ruby/3.3.5 gdcl/1.37.0
+      Authorization:
+      - Bearer <TOKEN>
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Vary:
+      - Origin
+      - Referer
+      - X-Origin
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Encoding:
+      - gzip
+      Date:
+      - Fri, 18 Oct 2024 00:02:49 GMT
+      Server:
+      - ESF
+      Cache-Control:
+      - private
+      X-Xss-Protection:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Content-Type-Options:
+      - nosniff
+      Alt-Svc:
+      - h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      X-L2-Request-Path:
+      - l2-managed-6
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "error": {
+            "code": 404,
+            "message": "Requested entity was not found.",
+            "status": "NOT_FOUND"
+          }
+        }
+  recorded_at: Fri, 18 Oct 2024 00:02:49 GMT
+recorded_with: VCR 6.3.1
