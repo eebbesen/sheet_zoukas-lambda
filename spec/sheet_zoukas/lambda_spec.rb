@@ -24,27 +24,37 @@ RSpec.describe SheetZoukas::Lambda do
   end
 
   describe '.call_sheet' do
-    it 'calls SheetZoukas::Lambda.call_sheet with all parameters' do
-      VCR.use_cassette('call_sheet_all') do
-        data = described_class.send(:call_sheet, event[:sheet_id], event[:tab_name], event[:range])
+    describe 'calls SheetZoukas::Lambda.call_sheet' do
+      it 'with all parameters' do
+        VCR.use_cassette('call_sheet_all') do
+          data = described_class.send(:call_sheet, event[:sheet_id], event[:tab_name], event[:range])
 
-        expect(JSON.parse(data)[0]).to eq(
-          { 'Place' => 'Slice Brothers', 'Deal' => '2 slices for $5.99', 'Deal Earned' => '', 'Deal Used' => '03/30',
-            'Deal Starts' => '', 'Deal Ends' => '', 'Notes' => 'no longer active', 'Money Saved' => '4.99',
-            'Reward Type' => 'no longer active' }
-        )
+          expect(JSON.parse(data)[0]).to eq(
+            { 'Place' => 'Slice Brothers', 'Deal' => '2 slices for $5.99', 'Deal Earned' => '', 'Deal Used' => '03/30',
+              'Deal Starts' => '', 'Deal Ends' => '', 'Notes' => 'no longer active', 'Money Saved' => '4.99',
+              'Reward Type' => 'no longer active' }
+          )
+        end
       end
-    end
 
-    it 'calls SheetZoukas::Lambda.call_sheet with all sheet_id and tab_name' do
-      VCR.use_cassette('call_sheet_some') do
-        data = described_class.send(:call_sheet, event[:sheet_id], event[:tab_name])
+      it 'with all sheet_id and tab_name' do
+        VCR.use_cassette('call_sheet_some') do
+          data = described_class.send(:call_sheet, event[:sheet_id], event[:tab_name])
 
-        expect(JSON.parse(data)[0]).to eq(
-          { 'Place' => 'Slice Brothers', 'Deal' => '2 slices for $5.99', 'Deal Earned' => '', 'Deal Used' => '03/30',
-            'Deal Starts' => '', 'Deal Ends' => '', 'Notes' => 'no longer active', 'Money Saved' => '4.99',
-            'Reward Type' => 'no longer active' }
-        )
+          expect(JSON.parse(data)[0]).to eq(
+            { 'Place' => 'Slice Brothers', 'Deal' => '2 slices for $5.99', 'Deal Earned' => '', 'Deal Used' => '03/30',
+              'Deal Starts' => '', 'Deal Ends' => '', 'Notes' => 'no longer active', 'Money Saved' => '4.99',
+              'Reward Type' => 'no longer active' }
+          )
+        end
+      end
+
+      it 'and logs error' do
+        VCR.use_cassette('call_sheet_error') do
+          expect do
+            described_class.send(:call_sheet, event[:sheet_id], event[:tab_name])
+          end.to raise_error(Google::Apis::ClientError)
+        end
       end
     end
   end
