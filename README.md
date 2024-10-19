@@ -1,6 +1,6 @@
 # SheetZoukas::Lambda
 
-AWS Lambda wrapper for [sheet_zoukas](https://github.com/eebbesen/sheet_zoukas).
+Deploy to AWS Lambda to expose Google Sheets as JSON via HTTPS. AWS Lambda wrapper for [sheet_zoukas](https://github.com/eebbesen/sheet_zoukas).
 
 ![Tests](https://github.com/eebbesen/sheet_zoukas-lambda/actions/workflows/test.yml/badge.svg)
 
@@ -13,6 +13,18 @@ Reference implementation TBD.
 ## Installation
 
 ## Usage
+
+Deploy to AWS Lambda to expose Google Sheets as JSON.
+
+Use with a request body (URL differs for each Lambda)
+
+    $ curl -v 'https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws' \
+      -H 'content-type: application/json' \
+      -d '{ "sheet_id": "<GOOGLE_SHEET_ID>", "tab_name": "<TAB_NAME>" }'
+
+Use with query string parameters
+
+    $ curl -v https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws'?sheet_id=<GOOGLE_SHEET_ID>&tab_name=<TAB_NAME>
 
 ## Development
 
