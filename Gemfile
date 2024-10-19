@@ -8,6 +8,7 @@ gem 'rake', '~> 13.0', require: false
 gem 'sheet_zoukas', '0.3.0'
 
 group :development, :test do
+  gem 'bundler-audit', require: false
   gem 'byebug', require: false
   gem 'rspec', require: true
   gem 'rubocop', require: false
