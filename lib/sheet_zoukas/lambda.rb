@@ -27,24 +27,30 @@ module SheetZoukas
     end
 
     private_class_method def self.extract_body(event)
-      event['body'] ? JSON.parse(event['body']) : {}
+      event['body'] ? JSON.parse(event['body']) : nil
     end
 
     private_class_method def self.extract_query_string_parameters(event)
-      event['queryStringParameters'] || {}
+      event['queryStringParameters'] || nil
     end
 
     private_class_method def self.extract_payload(event)
-      if event['body']
-        extract_body(event)
-      elsif event['queryStringParameters']
-        extract_query_string_parameters(event)
-      else
-        raise Error, 'event does not contain body or queryStringParameters'
-      end
-    rescue StandardError => e
-      SheetZoukas::Lambda::Logger.log('ERROR', "extract_payload:\n #{e}")
-      raise Error, e
+      payload = extract_body(event) || extract_query_string_parameters(event) || {}
+      merge_defaults(event['path'], payload)
+    end
+
+    private_class_method def self.merge_defaults(path, payload)
+      return payload unless path == '/defaults'
+
+      defaults.merge(payload)
+    end
+
+    private_class_method def self.defaults
+      {
+        'sheet_id' => ENV.fetch('DEFAULT_SHEET_ID', ''),
+        'tab_name' => ENV.fetch('DEFAULT_TAB_NAME', ''),
+        'range' => ENV.fetch('DEFAULT_RANGE', '')
+      }.freeze
     end
   end
 end

@@ -24,7 +24,19 @@ Use with a request body (URL differs for each Lambda)
 
 Use with query string parameters
 
-    $ curl -v https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws'?sheet_id=<GOOGLE_SHEET_ID>&tab_name=<TAB_NAME>
+    $ curl -v 'https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws?sheet_id=<GOOGLE_SHEET_ID>&tab_name=<TAB_NAME>'
+
+Use with environment variables in AWS Lambda as default values.
+
+    $ curl -v 'https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws/defaults'
+
+You can use defaults and still pass in values to override the environment variables. For example, with `SHEET_ID` and `TAB_NAME` set as an environment variable in Lambda the following will use the SHEET_ID but override the TAB_NAME:
+
+    $ curl -v 'https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws/defaults' \
+      -H 'content-type: application/json' \
+      -d '{ "tab_name": "<TAB_NAME>" }'
+
+    $ curl -v 'https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws/defaults?tab_name=<TAB_NAME>'
 
 ## Development
 
