@@ -151,21 +151,22 @@ RSpec.describe SheetZoukas::Lambda do
       expect { described_class.send(:validate_payload, JSON.parse(event_with_body['body'])) }.not_to raise_error
     end
 
-    it 'raises when no sheet_id' do
-      body = JSON.parse(event_with_body['body']).except('sheet_id')
-      expected_error_text = "sheet_id and tab_name are required\npayload: " \
-                            '{"tab_name"=>"tab_name_slug", "range"=>"A1:Z200"}'
+    it 'raises when empty sheet_id' do
+      body = JSON.parse(event_with_body['body']).merge('sheet_id' => '')
+      expected_error_text = "populated sheet_id and tab_name are required\npayload: " \
+                            '{"sheet_id"=>"", "tab_name"=>"tab_name_slug", "range"=>"A1:Z200"}'
 
       expect { described_class.send(:validate_payload, body) }
         .to raise_error(SheetZoukas::Lambda::InvalidArgumentError,
                         expected_error_text)
     end
 
-    it 'raises when no tab_name' do
+    it 'raises when empty tab_name' do
       expect do
-        described_class.send(:validate_payload, { 'sheet_id' => 'sheet_id_slug' })
+        described_class.send(:validate_payload, { 'sheet_id' => 'sheet_id_slug', 'tab_name' => '' })
       end.to raise_error(SheetZoukas::Lambda::InvalidArgumentError,
-                         "sheet_id and tab_name are required\npayload: {\"sheet_id\"=>\"sheet_id_slug\"}")
+                         "populated sheet_id and tab_name are required\npayload: " \
+                         '{"sheet_id"=>"sheet_id_slug", "tab_name"=>""}')
     end
   end
 

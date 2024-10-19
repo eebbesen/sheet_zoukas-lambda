@@ -47,9 +47,9 @@ module SheetZoukas
     end
 
     private_class_method def self.validate_payload(payload)
-      return if payload['sheet_id'] && payload['tab_name']
+      return unless payload['sheet_id'].strip.empty? || payload['tab_name'].strip.empty?
 
-      raise InvalidArgumentError, "sheet_id and tab_name are required\npayload: #{payload}"
+      raise InvalidArgumentError, "populated sheet_id and tab_name are required\npayload: #{payload}"
     end
 
     private_class_method def self.defaults
