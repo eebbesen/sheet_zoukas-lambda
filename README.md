@@ -2,6 +2,10 @@
 
 AWS Lambda wrapper for [sheet_zoukas](https://github.com/eebbesen/sheet_zoukas).
 
+![Tests](https://github.com/eebbesen/sheet_zoukas-lambda/actions/workflows/test.yml/badge.svg)
+
+[![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop)
+
 [sheet_zoukas](https://github.com/eebbesen/sheet_zoukas) converts Google Sheets to JSON. [sheet_zoukas-lambda](https://github.com/eebbesen/sheet_zoukas-lambda) serves [sheet_zoukas](https://github.com/eebbesen/sheet_zoukas) via AWS Lambda.
 
 Reference implementation TBD.
