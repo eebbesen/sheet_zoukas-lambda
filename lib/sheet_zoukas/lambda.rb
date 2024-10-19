@@ -2,6 +2,7 @@
 
 require_relative 'lambda/version'
 require_relative 'lambda/logger'
+require 'json'
 require 'sheet_zoukas'
 
 module SheetZoukas
@@ -26,21 +27,24 @@ module SheetZoukas
     end
 
     private_class_method def self.extract_body(event)
-      event['body'] || {}
+      event['body'] || ''
     end
 
     private_class_method def self.extract_query_string_parameters(event)
-      event['queryStringParameters'] || {}
+      event['queryStringParameters'] || ''
     end
 
     private_class_method def self.extract_payload(event)
-      if event['body']&.any?
+      if event['body']
         extract_body(event)
-      elsif event['queryStringParameters']&.any?
+      elsif event['queryStringParameters']
         extract_query_string_parameters(event)
       else
         raise Error, 'event does not contain body or queryStringParameters'
       end
+    rescue StandardError => e
+      SheetZoukas::Lambda::Logger.log('ERROR', "extract_payload:\n #{e}")
+      raise Error, e
     end
   end
 end

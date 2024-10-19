@@ -1,0 +1,6 @@
+{
+  "queryStringParameters": {
+    "sheet_id": "<REAL_SHEET_ID>",
+    "tab_name": "<REAL_TAB_NAME>"
+  }
+}

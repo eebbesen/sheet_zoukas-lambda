@@ -5,20 +5,13 @@ require 'json'
 require 'sheet_zoukas'
 
 RSpec.describe SheetZoukas::Lambda do
-  let(:payload) do
-    { 'sheet_id' => 'sheet_id_slug', 'tab_name' => 'tab_name_slug', 'range' => 'A1:Z200' }
-  end
-
   let(:event_with_body) do
-    p = payload
-    p['sheet_id'] = 'sheet_id_slug_body'
-    { 'body' => p }
+    { 'body' => "{ 'sheet_id_body': 'sheet_id_slug_body', 'tab_name': 'tab_name_slug', 'range': 'A1:Z200' }" }
   end
 
   let(:event_with_query_string_parameters) do
-    p = payload
-    p['sheet_id'] = 'sheet_id_slug_query_string_parameters'
-    { 'queryStringParameters' => p }
+    { 'queryStringParameters' =>
+      "{ 'sheet_id_qsp': 'sheet_id_slug_body', 'tab_name': 'tab_name_slug', 'range': 'A1:Z200' }" }
   end
 
   it 'has a version number' do
@@ -30,13 +23,15 @@ RSpec.describe SheetZoukas::Lambda do
       expect(described_class.send(:extract_payload, event_with_body)).to eq(event_with_body['body'])
     end
 
-    it 'calls extract_query_string_parameters when body and queryStringParameters' do
+    it 'calls body when body and queryStringParameters' do
       payload_ = event_with_body.merge(event_with_query_string_parameters)
-      expect(described_class.send(:extract_payload, payload_)).to eq(payload)
+      expect(described_class.send(:extract_payload, payload_)).to eq(event_with_body['body'])
     end
 
     it 'calls extract_query_string_parameters when only queryStringParameters' do
-      expect(described_class.send(:extract_payload, event_with_query_string_parameters)).to eq(payload)
+      expect(described_class
+        .send(:extract_payload, event_with_query_string_parameters))
+        .to eq(event_with_query_string_parameters['queryStringParameters'])
     end
 
     it 'raises error when no values in body or queryStringParameters' do
@@ -69,21 +64,23 @@ RSpec.describe SheetZoukas::Lambda do
 
   describe '.extract_body' do
     it 'returns body' do
-      expect(described_class.send(:extract_body, event_with_body)).to eq(payload)
+      expect(described_class.send(:extract_body, event_with_body)).to eq(event_with_body['body'])
     end
 
     it 'returns empty hash when no body' do
-      expect(described_class.send(:extract_body, event_with_query_string_parameters)).to eq({})
+      expect(described_class.send(:extract_body, event_with_query_string_parameters)).to eq('')
     end
   end
 
   describe '.extract_query_string_parameters' do
     it 'returns query_string_parameters' do
-      expect(described_class.send(:extract_query_string_parameters, event_with_query_string_parameters)).to eq(payload)
+      expect(described_class
+        .send(:extract_query_string_parameters, event_with_query_string_parameters))
+        .to eq(event_with_query_string_parameters['queryStringParameters'])
     end
 
     it 'returns empty hash when no query_string_parameters' do
-      expect(described_class.send(:extract_query_string_parameters, event_with_body)).to eq({})
+      expect(described_class.send(:extract_query_string_parameters, event_with_body)).to eq('')
     end
   end
 
@@ -91,7 +88,7 @@ RSpec.describe SheetZoukas::Lambda do
     describe 'calls SheetZoukas::Lambda.call_sheet' do
       it 'with all parameters' do
         VCR.use_cassette('call_sheet_all') do
-          data = described_class.send(:call_sheet, payload['sheet_id'], payload['tab_name'], payload['range'])
+          data = described_class.send(:call_sheet, 'sheet_id_slug', 'tab_name_slug', 'A1:Z200')
 
           expect(JSON.parse(data)[0]).to eq(
             { 'Place' => 'Slice Brothers', 'Deal' => '2 slices for $5.99', 'Deal Earned' => '', 'Deal Used' => '03/30',
@@ -103,7 +100,7 @@ RSpec.describe SheetZoukas::Lambda do
 
       it 'with all sheet_id and tab_name' do
         VCR.use_cassette('call_sheet_some') do
-          data = described_class.send(:call_sheet, payload['sheet_id'], payload['tab_name'])
+          data = described_class.send(:call_sheet, 'sheet_id_slug', 'tab_name_slug')
 
           expect(JSON.parse(data)[0]).to eq(
             { 'Place' => 'Slice Brothers', 'Deal' => '2 slices for $5.99', 'Deal Earned' => '', 'Deal Used' => '03/30',
@@ -116,7 +113,7 @@ RSpec.describe SheetZoukas::Lambda do
       it 'and logs error' do
         VCR.use_cassette('call_sheet_error') do
           expect do
-            described_class.send(:call_sheet, payload['sheet_id'], payload['tab_name'])
+            described_class.send(:call_sheet, 'sheet_id_slug', 'tab_name_slug')
           end.to raise_error(Google::Apis::ClientError)
         end
       end
