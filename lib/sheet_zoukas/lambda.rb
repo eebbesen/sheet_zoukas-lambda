@@ -27,11 +27,11 @@ module SheetZoukas
     end
 
     private_class_method def self.extract_body(event)
-      event['body'] || ''
+      event['body'] ? JSON.parse(event['body']) : ''
     end
 
     private_class_method def self.extract_query_string_parameters(event)
-      event['queryStringParameters'] || ''
+      event['queryStringParameters'] ? JSON.parse(event['queryStringParameters']) : ''
     end
 
     private_class_method def self.extract_payload(event)
