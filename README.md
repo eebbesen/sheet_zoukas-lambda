@@ -12,22 +12,12 @@ Reference implementation TBD.
 
 ## Development
 
-Run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`.
-
-## Release sheet_zoukas-lambda to RubyGems
-
-To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-To experiment with the code, run `bin/console` for an interactive prompt.
+    $ bundle install
+    $ rake spec
 
 ## Deploy to AWS
 
 ### Create AWS role
-
-* create
-* configure
 
 ### Create Lambda in AWS
 
@@ -50,6 +40,12 @@ For local development you'll want bundler reset to include test and development
     $ rake package:package_dev
 
 ### Deploy code
+
+Upload the zip file to the Lambda.
+
+### Test code
+
+Modify spec/fixtures/lambda_tests to have valid values and execute the tests in the Lambda console.
 
 ## Contributing
 
