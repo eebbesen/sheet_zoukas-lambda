@@ -19,7 +19,7 @@ RSpec.describe SheetZoukas::Lambda do
 
       described_class.lambda_handler(event: event, context: nil)
 
-      expect(described_class).to have_received(:call_sheet).with(event[:sheet_id], event[:tab_name], event[:range])
+      expect(described_class).to have_received(:call_sheet).with(event['sheet_id'], event['tab_name'], event['range'])
     end
   end
 
