@@ -27,5 +27,23 @@ module SheetZoukas
       SheetZoukas::Lambda::Logger.log('ERROR', "call_sheet:\n #{e}")
       raise e
     end
+
+    private_class_method def self.extract_body(event)
+      event['body'] || {}
+    end
+
+    private_class_method def self.extract_query_string_parameters(event)
+      event['queryStringParameters'] || {}
+    end
+
+    private_class_method def self.extract_payload(event)
+      if event['body']&.any?
+        extract_body(event)
+      elsif event['queryStringParameters']&.any?
+        extract_query_string_parameters(event)
+      else
+        raise Error, 'event does not contain body or queryStringParameters'
+      end
+    end
   end
 end
