@@ -21,7 +21,7 @@ RSpec.describe SheetZoukas::Lambda do
   describe 'merge_defaults' do
     describe 'without defaults set' do
       it 'merges with defaults when path is defaults' do
-        body = JSON.parse(event_with_body['body']).slice('sheet_id', 'range')
+        body = JSON.parse(event_with_body['body']).except('tab_name')
 
         expect(described_class
           .send(:merge_defaults, '/defaults', body))
@@ -37,13 +37,13 @@ RSpec.describe SheetZoukas::Lambda do
       end
 
       it 'does not merge defaults when path is empty' do
-        body = JSON.parse(event_with_body['body']).slice('tab_name', 'range')
+        body = JSON.parse(event_with_body['body']).except('sheet_id')
 
         expect(described_class.send(:merge_defaults, '/', body)).to eq(body)
       end
 
       it 'does not merge defaults when path set to something other than defaults' do
-        body = JSON.parse(event_with_body['body']).slice('tab_name', 'range')
+        body = JSON.parse(event_with_body['body']).except('sheet_id')
 
         expect(described_class.send(:merge_defaults, '/humegatech', body)).to eq(body)
       end
@@ -56,7 +56,7 @@ RSpec.describe SheetZoukas::Lambda do
         end
 
         it 'merges with defaults' do
-          body = JSON.parse(event_with_body['body']).slice('tab_name', 'range')
+          body = JSON.parse(event_with_body['body']).except('sheet_id')
 
           expect(described_class
             .send(:merge_defaults, '/defaults', body))
@@ -143,6 +143,29 @@ RSpec.describe SheetZoukas::Lambda do
 
     it 'returns empty hash when no query_string_parameters' do
       expect(described_class.send(:extract_query_string_parameters, event_with_body)).to be_nil
+    end
+  end
+
+  describe '.validate_payload' do
+    it 'returns true when sheet_id and tab_name' do
+      expect { described_class.send(:validate_payload, JSON.parse(event_with_body['body'])) }.not_to raise_error
+    end
+
+    it 'raises when no sheet_id' do
+      body = JSON.parse(event_with_body['body']).except('sheet_id')
+      expected_error_text = "sheet_id and tab_name are required\npayload: " \
+                            '{"tab_name"=>"tab_name_slug", "range"=>"A1:Z200"}'
+
+      expect { described_class.send(:validate_payload, body) }
+        .to raise_error(SheetZoukas::Lambda::InvalidArgumentError,
+                        expected_error_text)
+    end
+
+    it 'raises when no tab_name' do
+      expect do
+        described_class.send(:validate_payload, { 'sheet_id' => 'sheet_id_slug' })
+      end.to raise_error(SheetZoukas::Lambda::InvalidArgumentError,
+                         "sheet_id and tab_name are required\npayload: {\"sheet_id\"=>\"sheet_id_slug\"}")
     end
   end
 

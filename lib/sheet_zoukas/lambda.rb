@@ -9,6 +9,7 @@ module SheetZoukas
   # module for interacting with AWS Lambda
   module Lambda
     class Error < StandardError; end
+    class InvalidArgumentError < Error; end
 
     def self.lambda_handler(event:, context:)
       SheetZoukas::Lambda::Logger.log('DEBUG', "event: #{event}")
@@ -43,6 +44,12 @@ module SheetZoukas
       return payload unless path == '/defaults'
 
       defaults.merge(payload)
+    end
+
+    private_class_method def self.validate_payload(payload)
+      return if payload['sheet_id'] && payload['tab_name']
+
+      raise InvalidArgumentError, "sheet_id and tab_name are required\npayload: #{payload}"
     end
 
     private_class_method def self.defaults
