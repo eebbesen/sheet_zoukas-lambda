@@ -50,9 +50,9 @@ RSpec.describe SheetZoukas::Lambda do
 
       described_class.lambda_handler(event: event_with_body, context: nil)
 
-      expect(described_class).to have_received(:call_sheet).with(event_with_body['sheet_id'],
-                                                                 event_with_body['tab_name'],
-                                                                 event_with_body['range'])
+      expect(described_class).to have_received(:call_sheet).with(event_with_body['body']['sheet_id'],
+                                                                 event_with_body['body']['tab_name'],
+                                                                 event_with_body['body']['range'])
     end
 
     it 'calls SheetZoukas::Lambda.lambda_handler with queryStringParameters' do
@@ -60,9 +60,10 @@ RSpec.describe SheetZoukas::Lambda do
 
       described_class.lambda_handler(event: event_with_query_string_parameters, context: nil)
 
-      expect(described_class).to have_received(:call_sheet).with(event_with_query_string_parameters['sheet_id'],
-                                                                 event_with_query_string_parameters['tab_name'],
-                                                                 event_with_query_string_parameters['range'])
+      expect(described_class).to have_received(:call_sheet)
+        .with(event_with_query_string_parameters['queryStringParameters']['sheet_id'],
+              event_with_query_string_parameters['queryStringParameters']['tab_name'],
+              event_with_query_string_parameters['queryStringParameters']['range'])
     end
   end
 

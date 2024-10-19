@@ -13,11 +13,8 @@ module SheetZoukas
       SheetZoukas::Lambda::Logger.log('DEBUG', "event: #{event}")
       SheetZoukas::Lambda::Logger.log('DEBUG', "context: #{context}")
 
-      sheet_id = event['sheet_id']
-      tab_name = event['tab_name']
-      range = event['range']
-
-      call_sheet(sheet_id, tab_name, range)
+      payload = extract_payload(event)
+      call_sheet(payload['sheet_id'], payload['tab_name'], payload['range'])
     end
 
     private_class_method def self.call_sheet(sheet_id, tab_name, range = nil)
