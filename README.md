@@ -8,18 +8,7 @@ Reference implementation TBD.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
-
-Install the gem and add to the application's Gemfile by executing:
-
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
-
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
-
 ## Usage
-
 
 ## Development
 
@@ -42,10 +31,23 @@ To experiment with the code, run `bin/console` for an interactive prompt.
 
 ### Create Lambda in AWS
 
+* Runtime Settings -> Edit
+* Set Handler to `lib/sheet_zoukas/lambda.SheetZoukas::Lambda.lambda_handler`
+
 ### Create environment variables in AWS
-[sheet_zoukas](https://github.com/eebbesen/sheet_zoukas) uses environment variables to authenticate a Google service account. See [the sheet_zoukas README](https://github.com/eebbesen/sheet_zoukas?tab=readme-ov-file#requirements) for more info.
+
+* Configuration -> Environment Variables -> Edit -> Add environment variables
+* Set vars required by [sheet_zoukas](https://github.com/eebbesen/sheet_zoukas) uses environment variables to authenticate a Google service account. See [the sheet_zoukas README](https://github.com/eebbesen/sheet_zoukas?tab=readme-ov-file#requirements) for more info. The logs/console will tell you which environment variables aren't set.
 
 ### Package code
+
+For CI/CD use
+
+    $ rake package:package
+
+For local development you'll want bundler reset to include test and development
+
+    $ rake package:package_dev
 
 ### Deploy code
 

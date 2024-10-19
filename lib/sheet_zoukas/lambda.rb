@@ -2,6 +2,7 @@
 
 require_relative 'lambda/version'
 require_relative 'lambda/logger'
+require 'sheet_zoukas'
 
 module SheetZoukas
   # module for interacting with AWS Lambda
