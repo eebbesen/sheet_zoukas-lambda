@@ -22,6 +22,21 @@ RSpec.configure do |config|
   end
 end
 
+module SheetZoukas
+  # for testing don't try to authenticate with Google
+  # will need to remove when recording new VCR cassettes
+  class GoogleSheets
+    Authorizer = Struct.new(:scope)
+
+    private
+
+    def init_authorizer(scope)
+      scopes = scope.is_a?(Array) ? scope : [scope]
+      @authorizer = Authorizer.new(scopes)
+    end
+  end
+end
+
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
   config.hook_into :webmock
