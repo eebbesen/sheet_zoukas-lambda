@@ -11,7 +11,7 @@ RSpec.describe SheetZoukas::Lambda do
 
   let(:event_with_query_string_parameters) do
     { 'queryStringParameters' =>
-      '{ "sheet_id": "sheet_id_slug_qsp", "tab_name": "tab_name_slug", "range": "A1:Z200" }' }
+      { sheet_id: 'sheet_id_slug_qsp', tab_name: 'tab_name_slug', range: 'A1:Z200' } }
   end
 
   it 'has a version number' do
@@ -31,7 +31,7 @@ RSpec.describe SheetZoukas::Lambda do
     it 'calls extract_query_string_parameters when only queryStringParameters' do
       expect(described_class
         .send(:extract_payload, event_with_query_string_parameters))
-        .to eq(JSON.parse(event_with_query_string_parameters['queryStringParameters']))
+        .to eq(event_with_query_string_parameters['queryStringParameters'])
     end
 
     it 'raises error when no values in body or queryStringParameters' do
@@ -57,7 +57,7 @@ RSpec.describe SheetZoukas::Lambda do
 
       described_class.lambda_handler(event: event_with_query_string_parameters, context: nil)
 
-      qsp = JSON.parse(event_with_query_string_parameters['queryStringParameters'])
+      qsp = event_with_query_string_parameters['queryStringParameters']
 
       expect(described_class).to have_received(:call_sheet)
         .with(qsp['sheet_id'],
@@ -72,7 +72,7 @@ RSpec.describe SheetZoukas::Lambda do
     end
 
     it 'returns empty hash when no body' do
-      expect(described_class.send(:extract_body, event_with_query_string_parameters)).to eq('')
+      expect(described_class.send(:extract_body, event_with_query_string_parameters)).to eq({})
     end
   end
 
@@ -80,11 +80,11 @@ RSpec.describe SheetZoukas::Lambda do
     it 'returns query_string_parameters' do
       expect(described_class
         .send(:extract_query_string_parameters, event_with_query_string_parameters))
-        .to eq(JSON.parse(event_with_query_string_parameters['queryStringParameters']))
+        .to eq(event_with_query_string_parameters['queryStringParameters'])
     end
 
     it 'returns empty hash when no query_string_parameters' do
-      expect(described_class.send(:extract_query_string_parameters, event_with_body)).to eq('')
+      expect(described_class.send(:extract_query_string_parameters, event_with_body)).to eq({})
     end
   end
 
