@@ -6,6 +6,7 @@ SimpleCov.start do
   add_filter 'spec/'
 end
 
+require 'byebug'
 require 'sheet_zoukas/lambda'
 require 'vcr'
 require 'webmock/rspec'
