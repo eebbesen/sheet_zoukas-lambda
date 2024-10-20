@@ -31,9 +31,7 @@ RSpec.describe SheetZoukas::Lambda do
 
     describe 'with defaults set' do
       before do
-        ENV.store('DEFAULT_SHEET_ID', 'default_sheet_id')
-        ENV.store('DEFAULT_TAB_NAME', 'default_tab_name')
-        ENV.store('DEFAULT_RANGE', 'default_range')
+        set_defaults
       end
 
       it 'does not merge defaults when path is empty' do
@@ -75,6 +73,16 @@ RSpec.describe SheetZoukas::Lambda do
   end
 
   describe '.extract_payload' do
+    it 'uses defaults when no values in body or queryStringParameters' do
+      set_defaults
+
+      expect(described_class
+      .send(:extract_payload,
+            { 'rawPath' => '/defaults' })).to eq({ 'sheet_id' => ENV.fetch('DEFAULT_SHEET_ID', ''),
+                                                   'tab_name' => ENV.fetch('DEFAULT_TAB_NAME', ''),
+                                                   'range' => ENV.fetch('DEFAULT_RANGE', '') })
+    end
+
     it 'calls extract_body when only body' do
       expect(described_class.send(:extract_payload, event_with_body)).to eq(JSON.parse(event_with_body['body']))
     end
@@ -95,7 +103,11 @@ RSpec.describe SheetZoukas::Lambda do
     end
 
     it 'returns defaults when defaults path and no values in body or queryStringParameters' do
-      expect(described_class.send(:extract_payload, { 'rawPath' => '/defaults' })).to eq({})
+      expect(described_class
+      .send(:extract_payload,
+            { 'rawPath' => '/defaults' })).to eq({ 'sheet_id' => ENV.fetch('DEFAULT_SHEET_ID', ''),
+                                                   'tab_name' => ENV.fetch('DEFAULT_TAB_NAME', ''),
+                                                   'range' => ENV.fetch('DEFAULT_RANGE', '') })
     end
   end
 
@@ -204,6 +216,14 @@ RSpec.describe SheetZoukas::Lambda do
         end
       end
     end
+  end
+
+  private
+
+  def set_defaults
+    ENV.store('DEFAULT_SHEET_ID', 'default_sheet_id')
+    ENV.store('DEFAULT_TAB_NAME', 'default_tab_name')
+    ENV.store('DEFAULT_RANGE', 'default_range')
   end
 end
 

@@ -12,9 +12,9 @@ module SheetZoukas
     class InvalidArgumentError < Error; end
 
     def self.lambda_handler(event:, context:)
-      SheetZoukas::Lambda::Logger.log('DEBUG', "event: #{event}")
-      SheetZoukas::Lambda::Logger.log('DEBUG', "context: #{context}")
-      SheetZoukas::Lambda::Logger.log('DEBUG', "defaults: #{defaults}")
+      SheetZoukas::Lambda::Logger.log('DEBUG', "lambda_handler event: #{event}")
+      SheetZoukas::Lambda::Logger.log('DEBUG', "lambda_handler context: #{context}")
+      SheetZoukas::Lambda::Logger.log('DEBUG', "lambda_handler defaults: #{defaults}")
 
       payload = extract_payload(event)
       call_sheet(payload['sheet_id'], payload['tab_name'], payload['range'])
@@ -23,7 +23,8 @@ module SheetZoukas
     private_class_method def self.call_sheet(sheet_id, tab_name, range = nil)
       SheetZoukas.retrieve_sheet_json(sheet_id, tab_name, range)
     rescue StandardError => e
-      SheetZoukas::Lambda::Logger.log('DEBUG', "sheet_id: #{sheet_id}\ntab_name: #{tab_name}\nrange: #{range}")
+      SheetZoukas::Lambda::Logger.log('ERROR',
+                                      "call_sheet: sheet_id: #{sheet_id}\ntab_name: #{tab_name}\nrange: #{range}")
       SheetZoukas::Lambda::Logger.log('ERROR', "call_sheet:\n #{e}")
       raise e
     end
@@ -38,12 +39,14 @@ module SheetZoukas
 
     private_class_method def self.extract_payload(event)
       payload = extract_body(event) || extract_query_string_parameters(event) || {}
-      merge_defaults(event['path'], payload)
+      SheetZoukas::Lambda::Logger.log('DEBUG', "extract_paylaod: #{payload}")
+      merge_defaults(event['rawPath'], payload)
     end
 
     private_class_method def self.merge_defaults(path, payload)
       return payload unless path == '/defaults'
 
+      SheetZoukas::Lambda::Logger.log('DEBUG', "merge_defaults -- MERGING: payload: #{payload} path: #{path}")
       defaults.merge(payload)
     end
 
