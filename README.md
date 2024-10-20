@@ -12,7 +12,7 @@ Reference implementation TBD.
 
 ## Notes
 
-It appears that Lambda functions cannot control HTTP status codes in the response. If the lambda throws an error AWS returns a 502. Error information can be returned, but the HTTP status code will be 200. This implementation has chosen the latter options to provide callers with more information on error conditions at the cost of a true RESTful implementation.
+It appears that Lambda functions cannot control HTTP status codes in the response. If the lambda throws an error AWS returns a 502. Error information is be returned, but the HTTP status code will be 200. This implementation has chosen the latter options to provide callers with more information on error conditions at the cost of a true RESTful implementation.
 
 Precendence is given for parameters in request bodies over query string parameters.
 
