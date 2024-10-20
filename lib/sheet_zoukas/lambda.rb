@@ -14,6 +14,7 @@ module SheetZoukas
     def self.lambda_handler(event:, context:)
       SheetZoukas::Lambda::Logger.log('DEBUG', "event: #{event}")
       SheetZoukas::Lambda::Logger.log('DEBUG', "context: #{context}")
+      SheetZoukas::Lambda::Logger.log('DEBUG', "defaults: #{defaults}")
 
       payload = extract_payload(event)
       call_sheet(payload['sheet_id'], payload['tab_name'], payload['range'])
