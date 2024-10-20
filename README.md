@@ -10,7 +10,11 @@ Deploy to AWS Lambda to expose Google Sheets as JSON via HTTPS. AWS Lambda wrapp
 
 Reference implementation TBD.
 
-## Installation
+## Notes
+
+It appears that Lambda functions cannot control HTTP status codes in the response. If the lambda throws an error AWS returns a 502. Error information is be returned, but the HTTP status code will be 200. This implementation has chosen the latter options to provide callers with more information on error conditions at the cost of a true RESTful implementation.
+
+Precendence is given for parameters in request bodies over query string parameters.
 
 ## Usage
 
@@ -24,7 +28,26 @@ Use with a request body (URL differs for each Lambda)
 
 Use with query string parameters
 
-    $ curl -v https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws'?sheet_id=<GOOGLE_SHEET_ID>&tab_name=<TAB_NAME>
+    $ curl -v 'https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws?sheet_id=<GOOGLE_SHEET_ID>&tab_name=<TAB_NAME>'
+
+### Default values
+
+To use default values in AWS set one or more of the following
+* DEFAULT_SHEET_ID
+* DEFAULT_TAB_NAME
+* DEFAULT_RANGE
+
+Use with environment variables in AWS Lambda as default values.
+
+    $ curl -v 'https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws/defaults'
+
+You can use defaults and still pass in values to override the environment variables. For example, with `SHEET_ID` and `TAB_NAME` set as an environment variable in Lambda the following will use the SHEET_ID but override the TAB_NAME:
+
+    $ curl -v 'https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws/defaults' \
+      -H 'content-type: application/json' \
+      -d '{ "tab_name": "<TAB_NAME>" }'
+
+    $ curl -v 'https://a1aaa1aaaaaaaaaaaaaa1zzzzz1zzzzz.lambda-url.us-east-1.on.aws/defaults?tab_name=<TAB_NAME>'
 
 ## Development
 
