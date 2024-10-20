@@ -58,10 +58,10 @@ module SheetZoukas
 
     private_class_method def self.defaults
       {
-        'sheet_id' => ENV.fetch('DEFAULT_SHEET_ID', ''),
-        'tab_name' => ENV.fetch('DEFAULT_TAB_NAME', ''),
-        'range' => ENV.fetch('DEFAULT_RANGE', '')
-      }.freeze
+        'sheet_id' => ENV.fetch('DEFAULT_SHEET_ID', nil),
+        'tab_name' => ENV.fetch('DEFAULT_TAB_NAME', nil),
+        'range' => ENV.fetch('DEFAULT_RANGE', nil)
+      }.compact
     end
   end
 end

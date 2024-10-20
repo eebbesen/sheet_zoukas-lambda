@@ -3,8 +3,11 @@
 
 require 'json'
 require 'sheet_zoukas'
+require 'byebug'
 
 RSpec.describe SheetZoukas::Lambda do
+  before { clear_defaults }
+
   let(:event_with_body) do
     { 'body' => '{ "sheet_id": "sheet_id_slug_body", "tab_name": "tab_name_slug", "range": "A1:Z200" }' }
   end
@@ -23,16 +26,12 @@ RSpec.describe SheetZoukas::Lambda do
       it 'merges with defaults when path is defaults' do
         body = JSON.parse(event_with_body['body']).except('tab_name')
 
-        expect(described_class
-          .send(:merge_defaults, '/defaults', body))
-          .to eq(body.merge({ 'tab_name' => '' }))
+        expect(described_class.send(:merge_defaults, '/defaults', body)).to eq(body)
       end
     end
 
     describe 'with defaults set' do
-      before do
-        set_defaults
-      end
+      before { set_defaults }
 
       it 'does not merge defaults when path is empty' do
         body = JSON.parse(event_with_body['body']).except('sheet_id')
@@ -87,7 +86,7 @@ RSpec.describe SheetZoukas::Lambda do
       expect(described_class.send(:extract_payload, event_with_body)).to eq(JSON.parse(event_with_body['body']))
     end
 
-    it 'calls body when body and queryStringParameters' do
+    it 'calls extract_body when body and queryStringParameters' do
       payload_ = event_with_body.merge(event_with_query_string_parameters)
       expect(described_class.send(:extract_payload, payload_)).to eq(JSON.parse(event_with_body['body']))
     end
@@ -100,14 +99,6 @@ RSpec.describe SheetZoukas::Lambda do
 
     it 'returns empty hash when not defaults path and no values in body or queryStringParameters' do
       expect(described_class.send(:extract_payload, {})).to eq({})
-    end
-
-    it 'returns defaults when defaults path and no values in body or queryStringParameters' do
-      expect(described_class
-      .send(:extract_payload,
-            { 'rawPath' => '/defaults' })).to eq({ 'sheet_id' => ENV.fetch('DEFAULT_SHEET_ID', ''),
-                                                   'tab_name' => ENV.fetch('DEFAULT_TAB_NAME', ''),
-                                                   'range' => ENV.fetch('DEFAULT_RANGE', '') })
     end
   end
 
@@ -216,15 +207,37 @@ RSpec.describe SheetZoukas::Lambda do
         end
       end
     end
-  end
 
-  private
+    describe 'defaults' do
+      it 'does not return key when empty value' do
+        expect(described_class.send(:defaults)).to eq({})
+      end
 
-  def set_defaults
-    ENV.store('DEFAULT_SHEET_ID', 'default_sheet_id')
-    ENV.store('DEFAULT_TAB_NAME', 'default_tab_name')
-    ENV.store('DEFAULT_RANGE', 'default_range')
+      it 'returns defaults' do
+        set_defaults
+
+        expect(described_class.send(:defaults)).to eq(
+          { 'sheet_id' => ENV.fetch('DEFAULT_SHEET_ID', ''),
+            'tab_name' => ENV.fetch('DEFAULT_TAB_NAME', ''),
+            'range' => ENV.fetch('DEFAULT_RANGE', '') }
+        )
+      end
+    end
   end
+end
+
+private
+
+def set_defaults
+  ENV.store('DEFAULT_SHEET_ID', 'default_sheet_id')
+  ENV.store('DEFAULT_TAB_NAME', 'default_tab_name')
+  ENV.store('DEFAULT_RANGE', 'default_range')
+end
+
+def clear_defaults
+  ENV.delete('DEFAULT_SHEET_ID')
+  ENV.delete('DEFAULT_TAB_NAME')
+  ENV.delete('DEFAULT_RANGE')
 end
 
 # rubocop:enable RSpec/ExampleLength
