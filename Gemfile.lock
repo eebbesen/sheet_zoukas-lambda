@@ -131,6 +131,7 @@ PLATFORMS
 DEPENDENCIES
   bundler-audit
   byebug
+  googleauth
   rake (~> 13.0)
   rspec
   rubocop

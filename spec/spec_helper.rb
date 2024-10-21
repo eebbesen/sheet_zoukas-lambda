@@ -31,6 +31,7 @@ ENV.store('GOOGLE_CLIENT_EMAIL', 'sheet@zoukas.zoukas')
 ENV.store('GOOGLE_CLIENT_ID', 'fake_google_client_id')
 ENV.store('GOOGLE_PRIVATE_KEY', "----BEGIN PRIVATE KEY-----\nfake_google_private_key==\n-----END PRIVATE KEY-----\n")
 
+require 'googleauth'
 module SheetZoukas
   # for testing don't try to authenticate with Google
   # will need to remove when recording new VCR cassettes
@@ -40,6 +41,9 @@ module SheetZoukas
     private
 
     def init_authorizer(scope)
+      use_real_authorizer = !ENV.fetch('USE_REAL_AUTHORIZER', '').empty?
+      return Google::Auth::ServiceAccountCredentials.from_env(scope: scope) if use_real_authorizer
+
       scopes = scope.is_a?(Array) ? scope : [scope]
       @authorizer = Authorizer.new(scopes)
     end
