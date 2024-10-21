@@ -27,10 +27,10 @@ module SheetZoukas
     private_class_method def self.call_sheet(sheet_id, tab_name, range = nil)
       SheetZoukas.retrieve_sheet_json(sheet_id, tab_name, range)
     rescue StandardError => e
-      logger('ERROR',
-             "call_sheet: sheet_id: #{sheet_id}\ntab_name: #{tab_name}\nrange: #{range}")
+      logger('ERROR', "call_sheet: sheet_id: #{sheet_id}\ntab_name: #{tab_name}\nrange: #{range}")
       logger('ERROR', "call_sheet:\n #{e}")
-      raise e
+
+      SheetZoukas::Lambda::ErrorHandler.extrapolate_and_build_error(e).to_json
     end
 
     private_class_method def self.extract_body(event)
@@ -57,7 +57,7 @@ module SheetZoukas
     private_class_method def self.validate_payload(payload)
       return unless payload['sheet_id'].strip.empty? || payload['tab_name'].strip.empty?
 
-      raise InvalidArgumentError, "populated sheet_id and tab_name are required\npayload: #{payload}"
+      raise InvalidArgumentError, ''
     end
 
     private_class_method def self.defaults

@@ -3,7 +3,6 @@
 
 require 'json'
 require 'sheet_zoukas'
-require 'byebug'
 
 RSpec.describe SheetZoukas::Lambda do
   before { clear_defaults }
@@ -156,20 +155,15 @@ RSpec.describe SheetZoukas::Lambda do
 
     it 'raises when empty sheet_id' do
       body = JSON.parse(event_with_body['body']).merge('sheet_id' => '')
-      expected_error_text = "populated sheet_id and tab_name are required\npayload: " \
-                            '{"sheet_id"=>"", "tab_name"=>"tab_name_slug", "range"=>"A1:Z200"}'
 
       expect { described_class.send(:validate_payload, body) }
-        .to raise_error(SheetZoukas::Lambda::InvalidArgumentError,
-                        expected_error_text)
+        .to raise_error(SheetZoukas::Lambda::InvalidArgumentError, '')
     end
 
     it 'raises when empty tab_name' do
       expect do
         described_class.send(:validate_payload, { 'sheet_id' => 'sheet_id_slug', 'tab_name' => '' })
-      end.to raise_error(SheetZoukas::Lambda::InvalidArgumentError,
-                         "populated sheet_id and tab_name are required\npayload: " \
-                         '{"sheet_id"=>"sheet_id_slug", "tab_name"=>""}')
+      end.to raise_error(SheetZoukas::Lambda::InvalidArgumentError, '')
     end
   end
 
@@ -199,12 +193,26 @@ RSpec.describe SheetZoukas::Lambda do
         end
       end
 
-      it 'and logs error' do
+      it 'returns JSON describing client error' do
+        expected_error = {
+          statusCode: 400,
+          body: { error: "google rejected sheet_id and/or tab_name\nInvalid request (Google::Apis::ClientError)" }
+        }.to_json
         VCR.use_cassette('call_sheet_error') do
-          expect do
-            described_class.send(:call_sheet, 'sheet_id_slug', 'tab_name_slug')
-          end.to raise_error(Google::Apis::ClientError)
+          expect(described_class.send(:call_sheet, 'sheet_id_slug', 'tab_name_slug')).to eq(expected_error)
         end
+      end
+
+      it 'calls error_handler 403 with auth error' do
+        expected_error = {
+          statusCode: 403,
+          body: { error: "server failed to authenticate with google\nSignet::AuthorizationError" }
+        }.to_json
+        allow(SheetZoukas)
+          .to receive(:retrieve_sheet_json)
+          .and_raise(Signet::AuthorizationError, '')
+
+        expect(described_class.send(:call_sheet, 'sheet_id_slug', 'tab_name_slug')).to eq(expected_error)
       end
     end
 

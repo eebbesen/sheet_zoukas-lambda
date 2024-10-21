@@ -8,43 +8,53 @@ require_relative '../../../lib/sheet_zoukas/lambda'
 RSpec.describe SheetZoukas::Lambda::ErrorHandler do
   describe '.build_http_error' do
     it 'returns a hash with the status code and error message' do
-      result = described_class.send(:build_http_error, 500, StandardError.new('Something went wrong'))
+      result = described_class.send(:build_http_error, 500, StandardError.new('Something went wrong').detailed_message)
       expected_result = {
         statusCode: 500,
-        body: { error: 'Something went wrong (StandardError)' }.to_json
+        body: { error: 'Something went wrong (StandardError)' }
       }
 
       expect(result).to eq(expected_result)
     end
   end
 
-  describe '.build_403_forbiden' do
-    after { ENV.store('USE_REAL_AUTHORIZER', '') }
+  describe '.extrapolate_and_build_error' do
+    describe 'returns 400' do
+      it 'when required parameters present but rejected by google' do
+        expected_result = {
+          statusCode: 400,
+          body: { error: "google rejected sheet_id and/or tab_name\nGoogle::Apis::ClientError" }
+        }
 
-    it 'returns a hash with the status code 400 and error message' do
-      error_message = 'Method doesn\'t allow unregistered callers (callers without established identity). ' \
-                      'Please use API Key or other form of API consumer identity to call this API.'
+        expect(described_class.extrapolate_and_build_error(Google::Apis::ClientError.new('')))
+          .to eq(expected_result)
+      end
+
+      it 'when missing required parameters' do
+        expected_result = {
+          statusCode: 400,
+          body: { error: "populated sheet_id and tab_name are required\n" \
+                         'SheetZoukas::Lambda::InvalidArgumentError (SheetZoukas::Lambda::InvalidArgumentError)' }
+        }
+
+        expect(described_class.extrapolate_and_build_error(SheetZoukas::Lambda::InvalidArgumentError.new))
+          .to eq(expected_result)
+      end
+    end
+
+    it 'returns 403 when server fails to authenticate with google' do
       expected_result = {
         statusCode: 403,
-        body: { error: "#{error_message} (StandardError)" }.to_json
+        body: { error: "server failed to authenticate with google\nAuthorization failed. (Signet::AuthorizationError)" }
       }
 
-      expect(described_class.build_403_forbidden(StandardError.new(error_message)))
+      expect(described_class.extrapolate_and_build_error(Signet::AuthorizationError.new('Authorization failed.')))
         .to eq(expected_result)
     end
-  end
 
-  describe '.build_400_bad_request' do
-    it 'hides stack trace and shows error message & exception class' do
-      exception = SheetZoukas::Lambda::InvalidArgumentError
-                  .new("populated sheet_id and tab_name are required\npayload: {\"sheet_id\"=>\"\"}")
-      expected_result = {
-        statusCode: 400,
-        body: { error: 'populated sheet_id and tab_name are required (SheetZoukas::Lambda::InvalidArgumentError)' \
-                       "\npayload: {\"sheet_id\"=>\"\"}" }.to_json
-      }
-
-      expect(described_class.build_400_bad_request(exception)).to eq(expected_result)
+    it 'raises error if not a known error type' do
+      expect { described_class.extrapolate_and_build_error(StandardError.new) }
+        .to raise_error(StandardError)
     end
   end
 end
