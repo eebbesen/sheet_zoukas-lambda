@@ -70,10 +70,14 @@ You can use defaults and still pass in values to override the environment variab
 
 ### Create environment variables in AWS
 
-Google auth variables are required; default sheet values are not.
+Google auth variables are required; default sheet values and log level are not.
 
 * Configuration -> Environment Variables -> Edit -> Add environment variables
 * Set vars required by [sheet_zoukas](https://github.com/eebbesen/sheet_zoukas) uses environment variables to authenticate a Google service account. See [the sheet_zoukas README](https://github.com/eebbesen/sheet_zoukas?tab=readme-ov-file#requirements) for more info. The logs/console will tell you which environment variables aren't set.
+
+#### Logging
+
+Unless `ZOUKAS_LOG_LEVEL` environment variable is set only `ERROR`-level logging will occur.
 
 ### Package code
 
