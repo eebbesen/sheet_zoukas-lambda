@@ -10,6 +10,7 @@ gem 'sheet_zoukas', '0.3.0'
 group :development, :test do
   gem 'bundler-audit', require: false
   gem 'byebug', require: false
+  gem 'googleauth', require: false
   gem 'rspec', require: true
   gem 'rubocop', require: false
   gem 'rubocop-rake', require: false

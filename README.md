@@ -12,9 +12,14 @@ Reference implementation TBD.
 
 ## Notes
 
-It appears that Lambda functions cannot control HTTP status codes in the response. If the lambda throws an error AWS returns a 502. Error information is be returned, but the HTTP status code will be 200. This implementation has chosen the latter options to provide callers with more information on error conditions at the cost of a true RESTful implementation.
+It appears that Lambda functions cannot control HTTP status codes in the response. If the function throws an error AWS returns a 502. So I've opted to return error information for known errors, but the HTTP status code will be 200. This implementation has chosen the latter options to provide callers with more information on error conditions at the cost of a true RESTful implementation. Known errors are:
+* Google authentication issues
+* Missing required parameters
+* Google rejects parameters as invalid
 
 Precendence is given for parameters in request bodies over query string parameters.
+
+Precedence is given for passed-in parameters over default environment variables.
 
 ## Usage
 
@@ -65,6 +70,8 @@ You can use defaults and still pass in values to override the environment variab
 
 ### Create environment variables in AWS
 
+Google auth variables are required; default sheet values are not.
+
 * Configuration -> Environment Variables -> Edit -> Add environment variables
 * Set vars required by [sheet_zoukas](https://github.com/eebbesen/sheet_zoukas) uses environment variables to authenticate a Google service account. See [the sheet_zoukas README](https://github.com/eebbesen/sheet_zoukas?tab=readme-ov-file#requirements) for more info. The logs/console will tell you which environment variables aren't set.
 
@@ -84,7 +91,7 @@ Upload the zip file to the Lambda.
 
 ### Test code
 
-Modify spec/fixtures/lambda_tests to have valid values and execute the tests in the Lambda console.
+Modify spec/fixtures/lambda_tests to have valid values and execute the tests in the Lambda console. fixtures/lambda_tests/includes sample JSON you can use in the Lambda console after replacing slug values.
 
 ## Contributing
 
