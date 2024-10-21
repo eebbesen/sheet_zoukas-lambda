@@ -6,3 +6,7 @@
 
 - Support for default values for sheet_id, tab_name, and range
 - Return error message in JSON for invalid request data and Google auth issues instead of 50x
+
+## [0.3.0] - [UNRELEASED]
+
+- Configurable log levels
