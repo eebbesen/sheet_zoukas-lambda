@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
+require_relative 'lambda/error_handler'
 require_relative 'lambda/logger'
 require_relative 'lambda/version'
 require 'sheet_zoukas'
